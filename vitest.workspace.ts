@@ -1,12 +1,14 @@
 import react from "@vitejs/plugin-react";
-import { defineProject, defineWorkspace } from "vitest/config";
+import {
+  defineProject,
+  defineWorkspace,
+  type UserWorkspaceConfig,
+  type WorkspaceProjectConfiguration,
+} from "vitest/config";
 
 export default defineWorkspace([
-  defineProject({
+  defineExtends({
     plugins: [react()],
-    define: {
-      "process.env": JSON.stringify({}),
-    },
     test: {
       name: "project",
       browser: {
@@ -18,3 +20,11 @@ export default defineWorkspace([
     },
   }),
 ]);
+
+function defineExtends(
+  config: UserWorkspaceConfig,
+): WorkspaceProjectConfiguration {
+  return Object.assign(defineProject(config), {
+    extends: "./vitest.config.ts",
+  });
+}
